@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Registration Page</title>
+  <script>
+    function validateForm() {
+      let firstName = document.forms["regForm"]["fname"].value.trim();
+      let lastName = document.forms["regForm"]["lname"].value.trim();
+      let password = document.forms["regForm"]["password"].value;
+      let email = document.forms["regForm"]["email"].value.trim();
+      let mobile = document.forms["regForm"]["mobile"].value.trim();
+      let address = document.forms["regForm"]["address"].value.trim();
+
+      // First Name: alphabets only + min length 6
+      let nameRegex = /^[A-Za-z]+$/;
+      if (firstName.length < 6 || !nameRegex.test(firstName)) {
+        alert("❌ First Name must be at least 6 characters long and contain only alphabets.");
+        return false;
+      }
+
+      // Last Name: not empty
+      if (lastName === "") {
+        alert("❌ Last Name cannot be empty.");
+        return false;
+      }
+
+      // Password: min length 6
+      if (password.length < 6) {
+        alert("❌ Password must be at least 6 characters long.");
+        return false;
+      }
+
+      // Email: must match standard pattern
+      let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/;
+      if (!emailRegex.test(email)) {
+        alert("❌ Enter a valid email (e.g. name@domain.com).");
+        return false;
+      }
+
+      // Mobile: exactly 10 digits
+      let mobileRegex = /^[0-9]{10}$/;
+      if (!mobileRegex.test(mobile)) {
+        alert("❌ Mobile number must be exactly 10 digits.");
+        return false;
+      }
+
+      // Address: not empty
+      if (address === "") {
+        alert("❌ Address cannot be empty.");
+        return false;
+      }
+
+      alert("✅ Registration Successful!");
+      return true;
+    }
+  </script>
+</head>
+<body>
+  <h2>Registration Form</h2>
+  <form name="regForm" onsubmit="return validateForm()">
+    <label>First Name: </label>
+    <input type="text" name="fname"><br><br>
+
+    <label>Last Name: </label>
+    <input type="text" name="lname"><br><br>
+
+    <label>Password: </label>
+    <input type="password" name="password"><br><br>
+
+    <label>Email: </label>
+    <input type="text" name="email"><br><br>
+
+    <label>Mobile: </label>
+    <input type="text" name="mobile"><br><br>
+
+    <label>Address: </label>
+    <textarea name="address"></textarea><br><br>
+
+    <input type="submit" value="Register">
+  </form>
+</body>
+</html>

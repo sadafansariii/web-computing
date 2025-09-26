@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>College Website</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+    nav {
+      background: #34495e;
+      text-align: center;
+      padding: 10px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+    nav a:hover {
+      color: #f39c12;
+    }
+    section {
+      padding: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 80%;
+      margin: auto;
+    }
+    table, th, td {
+      border: 1px solid black;
+      text-align: center;
+      padding: 10px;
+    }
+    ul {
+      list-style-type: square;
+      padding-left: 40px;
+    }
+    form {
+      width: 60%;
+      margin: auto;
+      background: #ecf0f1;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      border: 1px solid #bdc3c7;
+      border-radius: 5px;
+    }
+    input[type="submit"] {
+      background: #2980b9;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    input[type="submit"]:hover {
+      background: #3498db;
+    }
+    footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Welcome to ABC College</h1>
+  </header>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#department">Departments</a>
+    <a href="#facility">Facilities</a>
+    <a href="#contact">Contact Us</a>
+  </nav>
+
+  <!-- Home Section -->
+  <section id="home">
+    <h2>Home Page</h2>
+    <p>This is the official website of <b>ABC College</b>. Explore our departments, facilities, and get in touch with us.</p>
+  </section>
+  <hr>
+
+  <!-- Department Section -->
+  <section id="department">
+    <h2>Departments</h2>
+    <table>
+      <tr>
+        <th>Department</th>
+        <th>Head</th>
+        <th>Contact</th>
+      </tr>
+      <tr>
+        <td>Computer Science</td>
+        <td>Dr. A Sharma</td>
+        <td>cs@college.com</td>
+      </tr>
+      <tr>
+        <td>Electronics</td>
+        <td>Dr. B Singh</td>
+        <td>ec@college.com</td>
+      </tr>
+      <tr>
+        <td>Mechanical</td>
+        <td>Dr. C Khan</td>
+        <td>me@college.com</td>
+      </tr>
+    </table>
+  </section>
+  <hr>
+
+  <!-- Facility Section -->
+  <section id="facility">
+    <h2>Facilities</h2>
+    <ul>
+      <li>Library</li>
+      <li>Computer Labs</li>
+      <li>Sports Complex</li>
+      <li>Hostel</li>
+      <li>Cafeteria</li>
+    </ul>
+  </section>
+  <hr>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <form>
+      <label>Name:</label>
+      <input type="text" name="name">
+
+      <label>Email:</label>
+      <input type="text" name="email">
+
+      <label>Message:</label>
+      <textarea name="message" rows="4"></textarea>
+
+      <input type="submit" value="Send">
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 ABC College. All Rights Reserved.</p>
+  </footer>
+
+</body>
+</html>

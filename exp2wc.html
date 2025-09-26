@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Online Book Store</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f9;
+    }
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    nav {
+      background: #34495e;
+      text-align: center;
+      padding: 10px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+    nav a:hover {
+      color: #f39c12;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+    }
+    .book-card {
+      background: white;
+      width: 200px;
+      margin: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .book-card:hover {
+      transform: scale(1.05);
+    }
+    .book-card img {
+      width: 100%;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+    .book-card h3 {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+    .book-card p {
+      font-size: 14px;
+      color: #555;
+      padding: 0 10px;
+    }
+    .book-card button {
+      background: #2980b9;
+      color: white;
+      border: none;
+      padding: 10px;
+      margin: 10px 0 15px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .book-card button:hover {
+      background: #3498db;
+    }
+    footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Welcome to Online Book Store</h1>
+    <p>Find your favorite books at best prices</p>
+  </header>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Books</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </nav>
+
+  <div class="container">
+    <div class="book-card">
+      <img src="https://via.placeholder.com/200x250" alt="Book 1">
+      <h3>Book Title 1</h3>
+      <p>Short description of the book goes here.</p>
+      <button>Buy Now</button>
+    </div>
+
+    <div class="book-card">
+      <img src="https://via.placeholder.com/200x250" alt="Book 2">
+      <h3>Book Title 2</h3>
+      <p>Short description of the book goes here.</p>
+      <button>Buy Now</button>
+    </div>
+
+    <div class="book-card">
+      <img src="https://via.placeholder.com/200x250" alt="Book 3">
+      <h3>Book Title 3</h3>
+      <p>Short description of the book goes here.</p>
+      <button>Buy Now</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Online Book Store | Designed with CSS3</p>
+  </footer>
+
+</body>
+</html>
