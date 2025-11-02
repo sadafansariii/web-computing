@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator using NODE(Single File)</title>
+    <!-- Load Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the calculator appearance and responsiveness */
+        :root {
+            font-family: 'Inter', sans-serif;
+        }
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+        .calculator-button {
+            /* Default button styles */
+            padding: 1.5rem 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-radius: 1.5rem; /* Large rounded corners */
+            transition: transform 0.1s, box-shadow 0.1s;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .calculator-button:active {
+            transform: translateY(1px);
+            box-shadow: none;
+        }
+        /* Style for the display text to prevent selection */
+        #display-output {
+            user-select: none;
+        }
+        
+        /* Animation for simulating network/server delay */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .animate-pulse-mock {
+            animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+    <!-- Calculator Container -->
+    <div id="calculator" class="w-full max-w-sm bg-white p-6 rounded-3xl shadow-2xl">
+        <h1 class="text-3xl font-extrabold text-gray-800 text-center mb-6">Calculator using NODE</h1>
+        
+        <!-- Display Area -->
+        <div id="display-output" class="bg-gray-800 text-right p-4 mb-4 rounded-xl shadow-inner h-24 flex flex-col justify-end">
+            <!-- Previous operation/small text -->
+            <div id="previous-operand" class="text-gray-400 text-xl truncate h-6"></div>
+            <!-- Current number/large result -->
+            <div id="current-operand" class="text-white text-5xl font-light truncate h-12">0</div>
+        </div>
+
+        <!-- Button Grid -->
+        <div class="calculator-grid">
+            <!-- Top Row: Utility Buttons -->
+            <button class="calculator-button bg-gray-200 text-gray-800 col-span-2" data-type="clear" id="btn-ac">AC</button>
+            <button class="calculator-button bg-gray-200 text-gray-800" data-type="delete" id="btn-del">DEL</button>
+            <button class="calculator-button bg-orange-500 hover:bg-orange-600 text-white" data-value="/" data-type="operator">/</button>
+
+            <!-- Numbers & Operators -->
+            <button class="calculator-button bg-gray-300 text-gray-800 hover:bg-gray-400" data-value="7" data-type="number">7</button>
+            <button class="calculator-button bg-gray-300 text-gray-800 hover:bg-gray-400" data-value="8" data-type="number">8</button>
+            <button class="calculator-button bg-gray-300 text-gray-800 hover:bg-gray-400" data-value="9" data-type="number">9</button>
+            <button class="calculator-button bg-orange-500 hover:bg-orange-600 text-white" data-value="*" data-type="operator">×</button>
+
+            <button class="calculator-button bg-gray-300 text-gray-800 hover:bg-gray-400" data-value="4" data-type="number">4</button>
+            <button class="calculator-button bg-gray-300 text-gray-800 hover:bg-gray-400" data-value="5" data-type="number">5</button>
+            <button class="calculator-button bg-gray-300 text-gray-800 hover:bg-gray-400" data-value="6" data-type="number">6</button>
+            <button class="calculator-button bg-orange-500 hover:bg-orange-600 text-white" data-value="-" data-type="operator">−</button>
+
+            <button class="calculator-button bg-gray-300 text-gray-800 hover:bg-gray-400" data-value="1" data-type="number">1</button>
+            <button class="calculator-button bg-gray-300 text-gray-800 hover:bg-gray-400" data-value="2" data-type="number">2</button>
+            <button class="calculator-button bg-gray-300 text-gray-800 hover:bg-gray-400" data-value="3" data-type="number">3</button>
+            <button class="calculator-button bg-orange-500 hover:bg-orange-600 text-white" data-value="+" data-type="operator">+</button>
+
+            <!-- Bottom Row: 0, Decimal, Equals -->
+            <button class="calculator-button bg-gray-300 text-gray-800 hover:bg-gray-400 col-span-2" data-value="0" data-type="number">0</button>
+            <button class="calculator-button bg-gray-300 text-gray-800 hover:bg-gray-400" data-value="." data-type="number">.</button>
+            <button class="calculator-button bg-green-500 hover:bg-green-600 text-white" data-type="equals" id="btn-equals">=</button>
+        </div>
+        
+        <!-- Message Box for simulating connection status -->
+        <div id="status-message" class="text-xs text-center mt-4 text-gray-500">
+            Calculation logic is simulated to run on a Node.js server.
+        </div>
+    </div>
+
+    <!-- START OF CALCULATOR JAVASCRIPT LOGIC -->
+    <script>
+        // IIFE (Immediately Invoked Function Expression) to manage scope
+        (function() {
+            // Calculator state variables
+            let currentOperand = '';
+            let previousOperand = '';
+            let operation = undefined;
+            let equalsPressed = false;
+
+            // DOM elements
+            const currentOperandElement = document.getElementById('current-operand');
+            const previousOperandElement = document.getElementById('previous-operand');
+            const calculatorButtons = document.querySelectorAll('.calculator-button');
+            const statusMessageElement = document.getElementById('status-message');
+
+            // --- Server-Side Logic Simulation (What would run on Node.js) ---
+
+            /**
+             * This function represents the actual calculation logic that would reside
+             * in a Node.js server's API endpoint (e.g., in an Express route).
+             * @param {number} prev - The previous number.
+             * @param {number} current - The current number.
+             * @param {string} operation - The operator.
+             * @returns {number} The result of the computation.
+             */
+            function performCalculation(prev, current, operation) {
+                let computation;
+                
+                switch (operation) {
+                    case '+':
+                        computation = prev + current;
+                        break;
+                    case '-':
+                        computation = prev - current;
+                        break;
+                    case '*':
+                        computation = prev * current;
+                        break;
+                    case '/':
+                        if (current === 0) {
+                            throw new Error("Division by zero!");
+                        }
+                        computation = prev / current;
+                        break;
+                    default:
+                        // This case should be prevented by front-end validation
+                        throw new Error("Invalid operation");
+                }
+
+                // Round the result for better precision (a good practice for finance/math apps)
+                return Math.round(computation * 100000000000) / 100000000000;
+            }
+
+            // --- Front-End Logic (The Browser App) ---
+            
+            /**
+             * Clears all operands and the operation.
+             */
+            function clear() {
+                currentOperand = '0';
+                previousOperand = '';
+                operation = undefined;
+                equalsPressed = false;
+            }
+
+            /**
+             * Deletes the last digit from the current operand.
+             */
+            function deleteLast() {
+                if (currentOperand === '0') return;
+                currentOperand = currentOperand.toString().slice(0, -1);
+                if (currentOperand === '' || currentOperand === '-') {
+                    currentOperand = '0';
+                }
+            }
+
+            /**
+             * Appends a number or decimal point to the current operand.
+             * @param {string} number - The number or decimal string to append.
+             */
+            function appendNumber(number) {
+                // If equals was just pressed, start a new calculation
+                if (equalsPressed) {
+                    currentOperand = '';
+                    previousOperand = '';
+                    operation = undefined;
+                    equalsPressed = false;
+                }
+                
+                if (number === '.' && currentOperand.includes('.')) return;
+                if (currentOperand === '0' && number !== '.') {
+                    currentOperand = number;
+                } else {
+                    // Prevent excessive number length
+                    if (currentOperand.length < 18) {
+                        currentOperand += number;
+                    }
+                }
+            }
+
+            /**
+             * Selects an operator and prepares for the next operand.
+             * @param {string} newOperation - The operator (+, -, *, /).
+             */
+            function chooseOperation(newOperation) {
+                if (currentOperand === '' || currentOperand === '0') return;
+
+                // If a previous operation exists, perform the pending calculation first
+                if (previousOperand !== '') {
+                    // Note: We call async calculate, but don't await it here, 
+                    // relying on the subsequent click to handle the timing.
+                    calculate(); 
+                }
+
+                operation = newOperation;
+                previousOperand = currentOperand;
+                currentOperand = '0'; // Reset current operand for next input
+                equalsPressed = false;
+            }
+
+            /**
+             * Performs the stored calculation by simulating a Node.js API call.
+             */
+            async function calculate() {
+                const prev = parseFloat(previousOperand);
+                const current = parseFloat(currentOperand);
+
+                if (isNaN(prev) || isNaN(current) || !operation) return;
+
+                const previousDisplay = `${previousOperand} ${operation} ${currentOperand}`;
+                
+                // 1. Show Loading State (Simulating Network Latency)
+                currentOperandElement.innerText = '...Calculating...';
+                previousOperandElement.innerText = previousDisplay;
+                currentOperandElement.classList.add('animate-pulse-mock');
+                statusMessageElement.classList.add('text-orange-500', 'font-semibold');
+                statusMessageElement.innerText = 'SENDING REQUEST TO NODE SERVER...';
+
+
+                try {
+                    // --- MOCK SERVER RESPONSE (the Node.js calculation logic runs here conceptually) ---
+                    // This is where a real fetch() call to a Node server would go:
+                    // const response = await fetch('/api/calculate', { method: 'POST', body: JSON.stringify({prev, current, operation}) });
+                    
+                    await new Promise(resolve => setTimeout(resolve, 500)); // Simulate 500ms server processing/network delay
+                    const computation = performCalculation(prev, current, operation);
+                    // --- END MOCK SERVER RESPONSE ---
+
+                    // 2. Update State with Server Result
+                    currentOperand = computation.toString();
+                    operation = undefined;
+                    previousOperand = '';
+                    equalsPressed = true;
+                    
+                    statusMessageElement.innerText = 'SUCCESS: Result received from Node Server.';
+                    statusMessageElement.classList.remove('text-orange-500', 'text-red-500');
+                    statusMessageElement.classList.add('text-green-500');
+
+
+                } catch (error) {
+                    displayError(error.message || "Server Error", 2000);
+                    
+                    statusMessageElement.innerText = `ERROR: ${error.message}`;
+                    statusMessageElement.classList.remove('text-orange-500', 'text-green-500');
+                    statusMessageElement.classList.add('text-red-500');
+
+                } finally {
+                    currentOperandElement.classList.remove('animate-pulse-mock');
+                    setTimeout(() => {
+                        statusMessageElement.innerText = 'Calculation logic is simulated to run on a Node.js server.';
+                        statusMessageElement.classList.remove('text-green-500', 'text-red-500');
+                        statusMessageElement.classList.add('text-gray-500');
+                    }, 1000);
+                    updateDisplay();
+                }
+            }
+
+            /**
+             * Updates the display elements based on the current state.
+             */
+            function updateDisplay() {
+                currentOperandElement.innerText = currentOperand || '0';
+                
+                // Show the full operation in the small text area
+                if (operation != null) {
+                    previousOperandElement.innerText = `${previousOperand} ${operation}`;
+                } else if (equalsPressed) {
+                    // Clear previous operand after equals
+                    previousOperandElement.innerText = '';
+                } else {
+                    previousOperandElement.innerText = previousOperand;
+                }
+
+                // Handle very large/small numbers with scientific notation
+                if (currentOperand.length > 18 && !currentOperand.includes('e')) {
+                    currentOperandElement.innerText = parseFloat(currentOperand).toExponential(5);
+                }
+            }
+
+            /**
+             * Displays an error message briefly.
+             * @param {string} message - The error message.
+             * @param {number} duration - How long to show the error (ms).
+             */
+            function displayError(message, duration = 1500) {
+                currentOperandElement.innerText = message;
+                currentOperandElement.classList.add('text-red-400');
+                
+                // Reset to 0 after duration
+                setTimeout(() => {
+                    currentOperandElement.classList.remove('text-red-400');
+                    clear();
+                    updateDisplay();
+                }, duration);
+            }
+
+            // --- Event Listeners ---
+
+            calculatorButtons.forEach(button => {
+                // Use async callback for equals button to properly await the calculation
+                button.addEventListener('click', async () => { 
+                    const type = button.dataset.type;
+                    const value = button.dataset.value;
+
+                    switch (type) {
+                        case 'number':
+                            appendNumber(value);
+                            break;
+                        case 'operator':
+                            chooseOperation(value);
+                            break;
+                        case 'equals':
+                            await calculate();
+                            // calculate() handles its own display update in the finally block
+                            return; 
+                        case 'clear':
+                            clear();
+                            break;
+                        case 'delete':
+                            deleteLast();
+                            break;
+                    }
+                    updateDisplay();
+                });
+            });
+
+            // Initialize the calculator on load
+            clear();
+            updateDisplay();
+        })();
+    </script>
+    <!-- END OF CALCULATOR JAVASCRIPT LOGIC -->
+</body>
+</html>
